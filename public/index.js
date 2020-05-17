@@ -1,14 +1,51 @@
 $(function() {
   // expose our socket client
   var socket = io();
-  
+  // const fr = require('fs'); 
+  // alert("here");
   // handle and submit new chat messages to our server
   $("form").submit(function(e) {
     e.preventDefault(); // prevents page reloading
     var msg = $("#m").val();
+    // alert("here");
+    // alert("msg");
+    // alert(msg.localeCompare("tweet") == 0);
+    // alert("check");
     if(msg.includes("ℏ")) { 
       alert("sorry, you're unable to send messages with ℏ in them!");
     }
+    // else if(msg.localeCompare("tweet") == 0){
+    //   alert("after elif");
+    //   // var client = new XMLHttpRequest();
+    //   // client.open('GET', '/tweets.txt');
+    //   // client.onreadystatechange = function()
+         
+    //   alert("check 1")        
+    //   fr.readFile("tweets.txt", 'utf8', function(err, data) {
+    //       if (err) throw err;
+    //       alert("here");
+    //       if(data)
+    //       {
+    //           var txt = data.split("\n");
+    //           alert("in tweet checker");
+    //           // loop top 5 strings if exist:
+    //           var len = 0;
+    //           if (txt.length>5){
+    //             len = 5;
+    //           }
+    //           else{
+    //             len = txt.length;
+    //           }
+    //           msg = "";
+    //           for (i = 0; i < len; i++) {
+    //            msg += txt[i]+" . ";
+    //           }
+    //       }
+    //       alert(msg);         
+    //     });
+    //   alert("after reaad!"); 
+    //   socket.emit("chat message",msg); 
+    // }
     else { 
       socket.emit("chat message", $("#m").val());
     }
@@ -30,7 +67,7 @@ $(function() {
     var sequenceNumber = splitMsg[3];
     var trimmedHash = "runningHash: "+splitMsg[4].slice(0,6) + "..";
     var trimmedTimestamp = splitMsg[5].slice(0,25);
-  
+    
     // Grab & trim our topic ID
     var topicId = document.getElementById("topic-id");
     var idString = topicId.innerHTML.substring(7, topicId.length);
@@ -49,7 +86,10 @@ $(function() {
           $("<a>").text("view transaction").addClass("details")
             .attr("target", "_blank")
             .attr("href", `https://explorer.kabuto.sh/testnet/topic/${idString}/message/${sequenceNumber}`))));
-  
+           
+            
+            var mas = new SpeechSynthesisUtterance(msg);
+            window.speechSynthesis.speak(mas);
     // Update the current sequence #
     $("#sequence-number").text("last message sequence number: " + sequenceNumber + "  ");
   });
